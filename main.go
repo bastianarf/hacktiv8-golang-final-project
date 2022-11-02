@@ -2,6 +2,7 @@ package main
 
 import (
 	"example.id/mygram/database"
+	_ "example.id/mygram/docs"
 	"example.id/mygram/routers"
 )
 

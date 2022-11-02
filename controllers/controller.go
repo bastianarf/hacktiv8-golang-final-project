@@ -10,11 +10,7 @@ import (
 
 var validate = validator.New()
 
-const (
-	messageStr         = "message"
-	errorMessageStr    = "error_message"
-	uniqueViolationErr = "23505"
-)
+const uniqueViolationErr = "23505"
 
 func validationAbort(err error, ctx *gin.Context) {
 	var errorMessage string

@@ -17,6 +17,7 @@ func CreateUser(userRegister *dto.UserRegister) (ID uint, err error) {
 		err = ErrDbNotStarted
 		return
 	}
+	// For ease of use in exercise, the cost is set to 4. Consider using higher cost for production.
 	passwordBytes, err := bcrypt.GenerateFromPassword([]byte(userRegister.Password), 4)
 	if err != nil {
 		return
@@ -41,7 +42,7 @@ func CreateUser(userRegister *dto.UserRegister) (ID uint, err error) {
 }
 
 func UpdateUser(id uint, userDto *dto.UserUpdate) (models.User, error) {
-	user, err := getUserWithoutPreload(id)
+	user, err := GetUserWithoutPreload(id)
 	if err != nil {
 		return user, err
 	}
@@ -58,7 +59,7 @@ func UpdateUser(id uint, userDto *dto.UserUpdate) (models.User, error) {
 }
 
 func DeleteUserById(id uint) error {
-	user, err := getUserWithoutPreload(id)
+	user, err := GetUserWithoutPreload(id)
 	if err != nil {
 		return err
 	}
@@ -110,7 +111,7 @@ func getUserByEmail(email string) (models.User, error) {
 	return user, nil
 }
 
-func getUserWithoutPreload(id uint) (models.User, error) {
+func GetUserWithoutPreload(id uint) (models.User, error) {
 	user := models.User{}
 	if db == nil {
 		return user, ErrDbNotStarted

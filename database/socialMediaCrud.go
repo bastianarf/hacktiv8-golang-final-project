@@ -46,9 +46,13 @@ func GetSingleSocialMedia(socmedID uint) (models.SocialMedia, error) {
 	return socmed, err
 }
 
-func UpdateSocialMedia(socmedID uint, socmedDto *dto.SocialMedia) (UpdatedAt time.Time, err error) {
+func UpdateSocialMedia(socmedID, userID uint, socmedDto *dto.SocialMedia) (UpdatedAt time.Time, err error) {
 	socmed, err := GetSingleSocialMedia(socmedID)
 	if err != nil {
+		return
+	}
+	if socmed.UserID != userID {
+		err = ErrIllegalUpdate
 		return
 	}
 	socmed.Name = socmedDto.Name
@@ -64,10 +68,13 @@ func UpdateSocialMedia(socmedID uint, socmedDto *dto.SocialMedia) (UpdatedAt tim
 	return
 }
 
-func DeleteSocialMediaById(socmedID uint) error {
+func DeleteSocialMedia(socmedID, userID uint) error {
 	socmed, err := GetSingleSocialMedia(socmedID)
 	if err != nil {
 		return err
+	}
+	if socmed.UserID != userID {
+		return ErrIllegalUpdate
 	}
 	if err := db.Delete(&socmed, socmedID).Error; err != nil {
 		return err

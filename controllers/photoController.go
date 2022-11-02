@@ -15,6 +15,18 @@ import (
 	"gorm.io/gorm"
 )
 
+// CreatePhoto godoc
+// @Summary      Create a Photo
+// @Description  Create a Photo associated with the logged in user identified by bearer token.
+// @Tags         photos
+// @Accept       json
+// @Produce      json
+// @Param        user body dto.Photo true "JSON of the photo to be made. Caption is not mandatory."
+// @Success      201  {object}  responses.CreatePhoto
+// @Failure      400  {object}  responses.ErrorMessage
+// @Failure      500  {object}  nil
+// @Router       /photos [post]
+// @Security	 BearerAuth
 func CreatePhoto(ctx *gin.Context) {
 	var newPhoto dto.Photo
 	if err := ctx.ShouldBindJSON(&newPhoto); err != nil {
@@ -47,6 +59,17 @@ func CreatePhoto(ctx *gin.Context) {
 	})
 }
 
+// GetPhotos godoc
+// @Summary      Get photos
+// @Description  Get photos.
+// @Tags         photos
+// @Accept       json
+// @Produce      json
+// @Success      200  {object}  []responses.GetPhoto
+// @Failure		 400 {object} responses.ErrorMessage
+// @Failure      500  {object}  nil
+// @Router       /photos [get]
+// @Security	 BearerAuth
 func GetAllPhotos(ctx *gin.Context) {
 	photos, err := database.GetAllPhotos()
 	if err != nil {
@@ -71,6 +94,21 @@ func GetAllPhotos(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, photosResponse)
 }
 
+// UpdatePhoto godoc
+// @Summary      Update a photo
+// @Description  Update a photo associated with logged in user.
+// @Tags         photos
+// @Accept       json
+// @Produce      json
+// @Param		 photoId path uint true "ID number of the photo"
+// @Param        photo body dto.Photo true "New JSON of the photo."
+// @Success      200  {object}  responses.UpdatePhoto
+// @Failure      400  {object}  responses.ErrorMessage
+// @Failure      403  {object}  responses.ErrorMessage
+// @Failure      404  {object}  responses.ErrorMessage
+// @Failure      500  {object}  nil
+// @Router       /photos/{photoId} [put]
+// @Security	 BearerAuth
 func UpdatePhoto(ctx *gin.Context) {
 	photoID := ctx.Param("photoId")
 	parsedID, err := strconv.ParseUint(photoID, 10, 0)
@@ -121,6 +159,20 @@ func UpdatePhoto(ctx *gin.Context) {
 	})
 }
 
+// DeletePhoto godoc
+// @Summary      Delete a photo
+// @Description  Delete a photo associated with logged in user.
+// @Tags         photos
+// @Accept       json
+// @Produce      json
+// @Param		 photoId path uint true "ID number of the photo to be deleted"
+// @Success      200  {object}  responses.Message
+// @Failure      400  {object}  responses.ErrorMessage
+// @Failure      403  {object}  responses.ErrorMessage
+// @Failure      404  {object}  responses.ErrorMessage
+// @Failure      500  {object}  nil
+// @Router       /photos/{photoId} [delete]
+// @Security	 BearerAuth
 func DeletePhoto(ctx *gin.Context) {
 	photoID := ctx.Param("photoId")
 	parsedID, err := strconv.ParseUint(photoID, 10, 0)

@@ -8,16 +8,16 @@ import (
 )
 
 type Photo struct {
-	ID       uint   `json:"id"`
+	ID       uint   `json:"id" example:"1"`
 	Title    string `json:"title"`
 	Caption  string `json:"caption"`
-	PhotoUrl string `json:"photo_url"`
-	UserID   uint   `json:"user_id"`
+	PhotoUrl string `json:"photo_url" example:"https://subdomain.domain.dom.ge/path?arg=1"`
+	UserID   uint   `json:"user_id" example:"1"`
 }
 
 type CreatePhoto struct {
 	Photo
-	CreatedAt time.Time `json:"created_at"`
+	CreatedAt time.Time `json:"created_at" example:"2019-11-09T21:21:46+00:00"`
 }
 
 type GetPhoto struct {
@@ -27,7 +27,7 @@ type GetPhoto struct {
 
 type UpdatePhoto struct {
 	Photo
-	UpdatedAt time.Time `json:"updated_at"`
+	UpdatedAt time.Time `json:"updated_at" example:"2019-11-09T21:21:46+00:00"`
 }
 
 func (getPhoto *GetPhoto) Set(photo models.Photo) {
